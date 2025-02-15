@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node index.js",
-    "build": "npm run build-script",
+    "build": "npm install",    
+    "dev": "nodemon index.js" ,
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -12,5 +13,8 @@
     "express": "^4.21.2",
     "puppeteer": "^24.2.1",
     "puppeteer-core": "^24.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"  
   }
 }
