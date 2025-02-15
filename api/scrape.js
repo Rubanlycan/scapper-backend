@@ -2,9 +2,12 @@ const express = require('express');
 const puppeteer = require('puppeteer');
 const cors = require('cors');
 const app = express();
-const PORT = 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://webscrapper-beige.vercel.app',  // Frontend URL
+  methods: ['GET', 'POST'],  // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers
+}));
 
 module.exports = async (req, res) => {
   if (req.method === 'GET' && req.url.startsWith('/scrape')) {
