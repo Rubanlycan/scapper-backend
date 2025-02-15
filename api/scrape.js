@@ -1,7 +1,8 @@
-const puppeteer = require('puppeteer');
+const app = require('express')
+const puppeteer = require('puppeteer-core'); 
 const chromium = require('chrome-aws-lambda');
 const cors = require('cors');
-
+const PORT = 5000
 const corsHandler = cors({
   origin: 'https://webscrapper-beige.vercel.app',  // Your frontend URL
   methods: ['GET', 'POST'],  // Allowed methods
@@ -75,4 +76,9 @@ module.exports = async (req, res) => {
       res.status(405).json({ error: 'Method Not Allowed' });
     }
   });
+
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+  
 };
