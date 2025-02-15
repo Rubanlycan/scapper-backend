@@ -2,8 +2,7 @@
   "name": "scrapper-backend",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {"start": "node index.js",
-                 "build":"npm run build-script",
+  "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
