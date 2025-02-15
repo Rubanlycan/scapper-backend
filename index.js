@@ -34,7 +34,7 @@ app.get('/scrape', async (req, res) => {
       headless: true, 
       ignoreHTTPSErrors: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'] ,
-      executablePath: path.join(process.cwd(), '.cache', 'puppeteer', 'chrome', puppeteerVersion, 'chrome-linux64', 'chrome')
+      executablePath: path.join(__dirname, 'chromium', 'chrome')
       
     });
     const page = await browser.newPage();
