@@ -4,6 +4,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "build": "yarn install && npx playwright install chromium",
+    "postinstall": "mkdir -p chromium && cp -r .cache/puppeteer/chrome/*/chrome-linux64 chromium/ && chmod +x chromium/chrome",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
