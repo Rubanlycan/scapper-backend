@@ -2,7 +2,7 @@
   "name": "scraper-backend",
   "version": "1.0.0",
   "scripts": {
-    "start": "node api/scrape.js",
+    "start": "node scrape.js",
     "build": "npm run build-script",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
