@@ -4,6 +4,7 @@
   "scripts": {
     "start": "node index.js",
     "build": "npm install",
+    "postinstall": "npx puppeteer browsers install", 
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
