@@ -2,14 +2,14 @@
     "version": 2,
     "builds": [
       {
-        "src": "api/index.js",
+        "src": "api/scrape.js",
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
         "src": "/scrape",
-        "dest": "/api/index.js"
+        "dest": "/api/scrape.js"
       }
     ]
   }
