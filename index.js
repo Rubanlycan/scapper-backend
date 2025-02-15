@@ -3,6 +3,7 @@ const puppeteer = require('puppeteer');
 const cors = require('cors');
 const path = require('path');
 const app = express();
+const fs = require('fs');
 const PORT = process.env.PORT || 5000;
 
 // Configure CORS
@@ -29,11 +30,25 @@ app.get('/scrape', async (req, res) => {
   }
 
   try {
-    const puppeteerVersion = require('puppeteer/package.json').version;
+    console.log("Current __dirname:", __dirname);
+    console.log("Current working directory:", process.cwd());
+    console.log("Puppeteer version:", require('puppeteer/package.json').version);
+    console.log("Checking for chromium at:", path.join(__dirname, 'chromium', 'chrome'));
+    
+    // Check if the file exists (requires the 'fs' module)
+
+    const chromiumPath = path.join(__dirname, 'chromium', 'chrome');
+    fs.access(chromiumPath, fs.constants.X_OK, (err) => {
+        if (err) {
+            console.error("Chromium not found or not executable:", err);
+        } else {
+            console.log("Chromium found and executable!");
+        }
+    });
     const browser = await puppeteer.launch({  
-      headless: true, 
+      headless: true,
       ignoreHTTPSErrors: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'] ,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
       executablePath: path.join(__dirname, 'chromium', 'chrome')
       
     });
