@@ -10,6 +10,10 @@
       {
         "src": "/scrape",
         "dest": "/api/scrape.js"
+      },
+      {
+        "src": "/",
+        "dest": "/scrape"
       }
     ]
   }
