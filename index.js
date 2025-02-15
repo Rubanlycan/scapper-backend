@@ -1,6 +1,7 @@
 const express = require('express');
 const puppeteer = require('puppeteer'); 
 const cors = require('cors');
+const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -29,9 +30,10 @@ app.get('/scrape', async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({  
-      headless: true, // Set to false for debugging on Render if needed
-      args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-   
+      headless: true, 
+      ignoreHTTPSErrors: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'] ,
+      executablePath: path.join(__dirname, '.cache', 'puppeteer', 'chrome', 'linux-133.0.6943.98', 'chrome-linux64', 'chrome') 
       
     });
     const page = await browser.newPage();
