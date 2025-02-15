@@ -29,6 +29,7 @@ app.get('/scrape', async (req, res) => {
   }
 
   try {
+    const puppeteerVersion = require('puppeteer/package.json').version;
     const browser = await puppeteer.launch({  
       headless: true, 
       ignoreHTTPSErrors: true,
