@@ -30,7 +30,6 @@ app.get('/scrape', async (req, res) => {
   try {
     const browser = await puppeteer.launch({  
       headless: true, // Set to false for debugging on Render if needed
-      ignoreHTTPSErrors: true, // Use with caution in production
       args: ['--no-sandbox', '--disable-setuid-sandbox'] 
    
       
