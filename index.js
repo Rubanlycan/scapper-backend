@@ -16,7 +16,7 @@ app.use(corsHandler);
 
 // Root route
 app.get('/', (req, res) => {
-  res.send('Welcome to the Scraper API! Please use /scrape endpoint for scraping.');
+  res.send('Welcome to the Scraper API!');
 });
 
 // Scrape route
@@ -28,7 +28,9 @@ app.get('/scrape', async (req, res) => {
   }
 
   try {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      headless:true
+    });
     const page = await browser.newPage();
     await page.goto(url);
 
