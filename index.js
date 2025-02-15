@@ -1,6 +1,5 @@
 const express = require('express');
-const puppeteer = require('puppeteer-core'); 
-const chromium = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer'); 
 const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -30,10 +29,9 @@ app.get('/scrape', async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({  
-        executablePath: await chromium.executablePath,
-        headless: true,
-        ignoreHTTPSErrors: true,
-        args: ['--no-sandbox', '--single-process', '--no-zygote', '--disable-setuid-sandbox']
+      headless: true, // Set to false for debugging on Render if needed
+      ignoreHTTPSErrors: true, // Use with caution in production
+      args: ['--no-sandbox', '--disable-setuid-sandbox'] 
    
       
     });
