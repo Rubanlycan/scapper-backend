@@ -45,13 +45,13 @@ app.get('/scrape', async (req, res) => {
             console.log("Chromium found and executable!");
         }
     });
-    const browser = await puppeteer.launch({  
+    const browser = await puppeteer.launch({
       headless: true,
       ignoreHTTPSErrors: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       executablePath: path.join(__dirname, 'chromium', 'chrome')
       
-    });
+  });
     const page = await browser.newPage();
     await page.goto(url);
 
