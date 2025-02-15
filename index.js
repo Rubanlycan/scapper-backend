@@ -1,5 +1,6 @@
 const express = require('express');
 const puppeteer = require('puppeteer'); 
+const chromium = require('chrome-aws-lambda');
 const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -28,8 +29,11 @@ app.get('/scrape', async (req, res) => {
   }
 
   try {
-    const browser = await puppeteer.launch({
-      headless:true
+    const browser = await puppeteer.launch({  
+        args: chromium.args,
+        executablePath: await chromium.executablePath,
+        headless: chromium.headless,
+      
     });
     const page = await browser.newPage();
     await page.goto(url);
