@@ -11,7 +11,7 @@ const corsHandler = cors({
     allowedHeaders: ['Content-Type', 'Authorization'], 
   });
   corsHandler(req, res, async () => {
-app.get('/scrape', async (req, res) => {
+  app.get('/scrape', async (req, res) => {
   const url = req.query.url; // Get the Amazon URL from the query parameters
 
   if (!url) {
@@ -28,7 +28,7 @@ app.get('/scrape', async (req, res) => {
     });
     const page = await browser.newPage();
     await page.goto(url);
-console.log(url)
+
 const listItems =   await page.$$eval('ul.a-unordered-list.a-vertical.a-spacing-mini li span.a-list-item', (items) => {
   return items.map((item, index) => {
 
