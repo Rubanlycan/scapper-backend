@@ -1,6 +1,6 @@
 
 const puppeteer = require('puppeteer-core');
-const chrome = require("chrome-aws-lambda");
+const chrome = require("@sparticuz/chromium");
 const cors = require('cors');
 
 
