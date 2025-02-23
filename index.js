@@ -1,6 +1,6 @@
 
 const puppeteer = require('puppeteer-core');
-const chrome = require("@sparticuz/chromium");
+const chromium  = require("@sparticuz/chromium");
 const cors = require('cors');
 
 
@@ -21,11 +21,10 @@ module.exports = async (req, res) => {
 
       try {
         const browser = await puppeteer.launch({
-          args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
-          defaultViewport: chrome.defaultViewport,
-          ignoreDefaultArgs: ['--disable-extensions'],
-          executablePath: await chrome.executablePath,
-          headless: true,
+          args: chromium.args,
+          defaultViewport: chromium.defaultViewport,
+          executablePath: await chromium.executablePath(),
+          headless: chromium.headless,
           ignoreHTTPSErrors: true,
         });
         const page = await browser.newPage();
