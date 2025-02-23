@@ -17,7 +17,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "puppeteer": "^24.2.1",
-    "puppeteer-core": "^21.6.1",
-    "chrome-aws-lambda": "^10.1.0"
+"@sparticuz/chromium": "122.0.0",
+"puppeteer-core": "22.5.0"
   }
 }

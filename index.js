@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
           args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
           defaultViewport: chrome.defaultViewport,
           ignoreDefaultArgs: ['--disable-extensions'],
-          executablePath: await chrome.executablePath(),
+          executablePath: await chrome.executablePath,
           headless: true,
           ignoreHTTPSErrors: true,
         });
