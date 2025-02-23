@@ -1,4 +1,4 @@
-const express = require('express');
+
 const puppeteer = require('puppeteer-core');
 const chrome = require("chrome-aws-lambda");
 const cors = require('cors');
@@ -23,7 +23,8 @@ module.exports = async (req, res) => {
         const browser = await puppeteer.launch({
           args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
           defaultViewport: chrome.defaultViewport,
-          executablePath: await chrome.executablePath,
+          ignoreDefaultArgs: ['--disable-extensions'],
+          executablePath: await chrome.executablePath(),
           headless: true,
           ignoreHTTPSErrors: true,
         });
