@@ -1,8 +1,5 @@
-
-const puppeteer = require('puppeteer-core');
-const chromium  = require("@sparticuz/chromium");
+const playwright = require('playwright');
 const cors = require('cors');
-
 
 module.exports = async (req, res) => {
   const corsHandler = cors({
@@ -20,16 +17,16 @@ module.exports = async (req, res) => {
       }
 
       try {
-        const browser = await puppeteer.launch({
-          args: chromium.args,
-          defaultViewport: chromium.defaultViewport,
-          executablePath: await chromium.executablePath(),
-          headless: chromium.headless,
-          ignoreHTTPSErrors: true,
+        // Launch browser with Playwright
+        const browser = await playwright.chromium.launch({
+          headless: true, // Run in headless mode
+          args: ['--no-sandbox', '--disable-setuid-sandbox'], // Ensure it's compatible with serverless environments
         });
+        
         const page = await browser.newPage();
         await page.goto(url);
 
+        // Scraping list items
         const listItems = await page.$$eval(
           'ul.a-unordered-list.a-vertical.a-spacing-mini li span.a-list-item',
           (items) => {
@@ -39,11 +36,13 @@ module.exports = async (req, res) => {
           }
         );
 
+        // Scraping MRP (Maximum Retail Price)
         const MRP = await page.evaluate(() => {
           const mrpElement = document.querySelector('.a-text-price .a-size-base');
           return mrpElement ? mrpElement.textContent.trim() : '';
         });
 
+        // Scraping product details
         const productDetails = await page.evaluate(() => {
           const title = document.getElementById('productTitle')?.textContent.trim();
           const salePrice = document.querySelector('.a-price-whole')?.textContent.trim();
