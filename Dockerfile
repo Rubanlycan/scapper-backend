@@ -1,20 +1,18 @@
-# Use an official Node.js image
+# Use Playwright's official image (includes Chromium, Firefox, WebKit)
 FROM mcr.microsoft.com/playwright:v1.40.0-focal
 
-# Set the working directory to the root
+# Set working directory to the root
 WORKDIR /
 
-# Copy package.json and yarn.lock first
+# Copy package.json and install dependencies
 COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-# Install dependencies
-RUN yarn install
-
-# Copy all files from the root directory
+# Copy all files from root
 COPY . .
 
-# Expose the correct port
+# Expose the port Render will use
 EXPOSE 3000
 
-# Start the server
-CMD ["yarn", "start"]
+# Start the server (ensure index.js is in root)
+CMD ["node", "index.js"]
