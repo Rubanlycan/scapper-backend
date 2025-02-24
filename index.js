@@ -13,6 +13,16 @@ app.use(
   })
 );
 
+(async () => {
+  console.log("Checking Playwright browsers...");
+  try {
+    execSync("npx playwright install chromium --with-deps", { stdio: "inherit" });
+  } catch (error) {
+    console.error("Failed to install Playwright browsers:", error);
+  }
+  console.log("Playwright browsers installed.");
+})();
+
 app.get("/api/scrape", async (req, res) => {
   const url = req.query.url;
 
@@ -21,9 +31,11 @@ app.get("/api/scrape", async (req, res) => {
   }
 
   try {
+    const BROWSER_PATH = '/opt/render/.cache/ms-playwright/chromium-1155/chrome-linux/chrome';
     // Launch browser with Playwright
     const browser = await playwright.chromium.launch({
       headless: true, // Run in headless mode
+      executablePath: BROWSER_PATH,
       args: ["--no-sandbox", "--disable-setuid-sandbox"], // Ensure compatibility
     });
 

@@ -1,24 +1,27 @@
-# Use Playwright's official image with required dependencies
+# Use Playwright's official image
 FROM mcr.microsoft.com/playwright:v1.40.0-focal
 
-# Install missing dependencies manually (Fix Render issues)
-RUN apt-get update && apt-get install -y libnss3 libatk1.0-0 libx11-xcb1 libxcb-dri3-0 libdrm2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2
+# Ensure all system dependencies are installed
+RUN apt-get update && apt-get install -y libnss3 libatk1.0-0 libx11-xcb1 libxcb-dri3-0 \
+    libdrm2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2
 
-# Set working directory to root (since your index.js is in root)
+# Set working directory
 WORKDIR /
 
-# Copy package.json and install dependencies
+# Copy dependencies
 COPY package.json yarn.lock ./
+
+# Install dependencies
 RUN yarn install --frozen-lockfile
 
-# Copy all files from root
+# Force Playwright to install browsers manually
+RUN npx playwright install chromium --with-deps
+
+# Copy all files
 COPY . .
 
-# Expose the port Render will use
+# Expose the port
 EXPOSE 3000
 
-# Install Playwright browsers every time the container starts (Fix Render issue)
-RUN npx playwright install --with-deps
-
-# Start the server
-CMD npx playwright install --with-deps && node index.js
+# Run Playwright installation again at runtime (Render fix)
+CMD npx playwright install chromium --with-deps && node index.js
