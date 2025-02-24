@@ -13,15 +13,7 @@ app.use(
   })
 );
 
-(async () => {
-  console.log("Checking Playwright browsers...");
-  try {
-    execSync("npx playwright install chromium --with-deps", { stdio: "inherit" });
-  } catch (error) {
-    console.error("Failed to install Playwright browsers:", error);
-  }
-  console.log("Playwright browsers installed.");
-})();
+
 
 app.get("/api/scrape", async (req, res) => {
   const url = req.query.url;
