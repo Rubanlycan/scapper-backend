@@ -8,6 +8,8 @@ WORKDIR /
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
+RUN npx playwright install --with-deps
+
 # Copy all files from root
 COPY . .
 
