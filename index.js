@@ -1,70 +1,72 @@
-const playwright = require('playwright');
-const cors = require('cors');
+const express = require("express");
+const playwright = require("playwright");
+const cors = require("cors");
 
-module.exports = async (req, res) => {
-  const corsHandler = cors({
-    origin: 'https://webscrapper-beige.vercel.app',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  });
+const app = express();
+const PORT = process.env.PORT || 3000; // Render assigns a port dynamically
 
-  corsHandler(req, res, async () => {
-    if (req.method === 'GET' && req.url.startsWith('/api/scrape')) {
-      const url = req.query.url;
+app.use(
+  cors({
+    origin: "https://webscrapper-beige.vercel.app",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-      if (!url) {
-        return res.status(400).json({ error: 'URL is required' });
-      }
+app.get("/api/scrape", async (req, res) => {
+  const url = req.query.url;
 
-      try {
-        // Launch browser with Playwright
-        const browser = await playwright.chromium.launch({
-          headless: true, // Run in headless mode
-          args: ['--no-sandbox', '--disable-setuid-sandbox'], // Ensure it's compatible with serverless environments
-        });
-        
-        const page = await browser.newPage();
-        await page.goto(url);
+  if (!url) {
+    return res.status(400).json({ error: "URL is required" });
+  }
 
-        // Scraping list items
-        const listItems = await page.$$eval(
-          'ul.a-unordered-list.a-vertical.a-spacing-mini li span.a-list-item',
-          (items) => {
-            return items.map((item, index) => {
-              return { [`point${index + 1}`]: item.textContent.trim() };
-            });
-          }
-        );
+  try {
+    // Launch browser with Playwright
+    const browser = await playwright.chromium.launch({
+      headless: true, // Run in headless mode
+      args: ["--no-sandbox", "--disable-setuid-sandbox"], // Ensure compatibility
+    });
 
-        // Scraping MRP (Maximum Retail Price)
-        const MRP = await page.evaluate(() => {
-          const mrpElement = document.querySelector('.a-text-price .a-size-base');
-          return mrpElement ? mrpElement.textContent.trim() : '';
-        });
+    const page = await browser.newPage();
+    await page.goto(url);
 
-        // Scraping product details
-        const productDetails = await page.evaluate(() => {
-          const title = document.getElementById('productTitle')?.textContent.trim();
-          const salePrice = document.querySelector('.a-price-whole')?.textContent.trim();
-          const reviews = document.getElementById('acrCustomerReviewText')?.textContent.trim();
-          const ratings = document.querySelector('.a-size-base .a-color-base')?.textContent.trim();
+    // Scraping list items
+    const listItems = await page.$$eval(
+      "ul.a-unordered-list.a-vertical.a-spacing-mini li span.a-list-item",
+      (items) =>
+        items.map((item, index) => ({ [`point${index + 1}`]: item.textContent.trim() }))
+    );
 
-          return { title, salePrice, reviews, ratings };
-        });
+    // Scraping MRP (Maximum Retail Price)
+    const MRP = await page.evaluate(() => {
+      const mrpElement = document.querySelector(".a-text-price .a-size-base");
+      return mrpElement ? mrpElement.textContent.trim() : "";
+    });
 
-        await browser.close();
+    // Scraping product details
+    const productDetails = await page.evaluate(() => {
+      const title = document.getElementById("productTitle")?.textContent.trim();
+      const salePrice = document.querySelector(".a-price-whole")?.textContent.trim();
+      const reviews = document.getElementById("acrCustomerReviewText")?.textContent.trim();
+      const ratings = document.querySelector(".a-size-base .a-color-base")?.textContent.trim();
 
-        if (!productDetails.title) {
-          return res.status(404).json({ error: 'Product details not found' });
-        }
+      return { title, salePrice, reviews, ratings };
+    });
 
-        res.json({ ...productDetails, listItems, url, MRP });
-      } catch (error) {
-        console.error('Error scraping product:', error);
-        res.status(500).json({ error: 'Failed to scrape product' });
-      }
-    } else {
-      res.status(404).send('Not Found');
+    await browser.close();
+
+    if (!productDetails.title) {
+      return res.status(404).json({ error: "Product details not found" });
     }
-  });
-};
+
+    res.json({ ...productDetails, listItems, url, MRP });
+  } catch (error) {
+    console.error("Error scraping product:", error);
+    res.status(500).json({ error: "Failed to scrape product" });
+  }
+});
+
+// Start the Express server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
