@@ -31,7 +31,7 @@ app.get("/api/scrape", async (req, res) => {
   }
 
   try {
-    const BROWSER_PATH = '/opt/render/.cache/ms-playwright/chromium-1155/chrome-linux/chrome';
+    const BROWSER_PATH = "/usr/bin/google-chrome-stable"
     // Launch browser with Playwright
     const browser = await playwright.chromium.launch({
       headless: true, // Run in headless mode
