@@ -5,8 +5,9 @@ FROM mcr.microsoft.com/playwright:v1.40.0-focal
 WORKDIR /
 
 # Install dependencies (explicitly install Chromium)
-RUN apt-get update && apt-get install -y wget unzip libnss3 libatk1.0-0 libx11-xcb1 \
-  libxcb-dri3-0 libdrm2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2 && \
+RUN apt-get update && apt-get install -y libnss3 libatk1.0-0 libx11-xcb1 \
+  libxcb-dri3-0 libdrm2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 \
+  libasound2 libpangocairo-1.0-0 libxshmfence1 libxfixes3 && \
   rm -rf /var/lib/apt/lists/*
 
 # Copy package.json and install dependencies
